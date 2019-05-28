@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    enum Enum{z=0,x=2,c=4,v=8,b=16,n=32,m=64,a=128,s=256,d=512,f=1024,g=2048};
+    
     [SerializeField] private Sprite[] sprites=new Sprite[12];
     [SerializeField] private GameObject obj;
+    Board b = new Board();
     int size=4;
-    int[,] board = { {0,0,0,0 },{ 0,2,4,8},{0,8,16,64 },{ 32,128,256,1024} };
+    int[,] board;
+    int score;
     GameObject[,] board_obj=new GameObject[4,4];
 
     private void Awake()
     {
-        for(int i = 0; i < size; i++)
+        board = b.exportBoard();
+        for (int i = 0; i < size; i++)
         {
             for(int j = 0; j < size; j++)
             {
@@ -72,17 +75,12 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            int k = 2;
-            for(int i = 0; i < 4; i++)
+            int[,] value = new int[4, 4];
+            for (int i = 0; i < 4; i++)
             {
-                for(int j = 0; j < 4; j++)
+                for (int j = 0; j < 4; j++)
                 {
-                    board[i, j] = k;
-                    k *= 2;
-                    if (k > 2048)
-                    {
-                        k = 2;
-                    }
+                    value[i, j] = 16;
                 }
             }
         }

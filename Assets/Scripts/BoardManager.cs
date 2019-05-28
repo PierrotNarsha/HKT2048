@@ -17,13 +17,13 @@ public class BoardManager : MonoBehaviour
     }
 }
 
-public class board
+public class Board
 {
     public readonly int LENGTH = 4;
-    public int[,] value;
+    private int[,] value;
     public int score;
 
-    board()
+    public Board()
     {
         value = new int[LENGTH, LENGTH];
         for (int i = 0; i < LENGTH; i++)
@@ -80,7 +80,11 @@ public class board
 
     public void gravity(char way)
     {
-
+        
     }
 
+    public int[,] exportBoard()
+    {
+        return value;
+    }
 }
