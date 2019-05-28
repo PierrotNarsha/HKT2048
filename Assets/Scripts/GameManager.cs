@@ -5,11 +5,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     
-    [SerializeField] private Sprite[] sprites=new Sprite[12];
-    [SerializeField] private GameObject obj;
+    [SerializeField] private Sprite[] sprites=new Sprite[15];//0은 숫자 없음, 1~11까지는 2~2048, 12부터는 보스 공격
+    [SerializeField] private GameObject obj,obj_boom;
     Board b = new Board();
     int size=4;
-    int[,] board;
+    int[,] board;//숫자 배당은 0,2의 배수 : 숫자 타일, 음수 : 보스 공격 패턴
     int score;
     GameObject[,] board_obj=new GameObject[4,4];
 
@@ -34,9 +34,14 @@ public class GameManager : MonoBehaviour
             {
                 switch (board[i, j])
                 {
-                    case 0:
-                        board_obj[i, j].GetComponent<SpriteRenderer>().sprite = sprites[0];
+                    case -1:
+                        board_obj[i, j].GetComponent<SpriteRenderer>().sprite = sprites[12];//슬라임 끈끈이
                         break;
+                    case -3:
+                        board_obj[i, j].GetComponent<SpriteRenderer>().sprite = sprites[14];//골렘 봉인
+                        break;
+                    case 0:
+                        board_obj[i, j].GetComponent<SpriteRenderer>().sprite = sprites[0]; break;
                     case 2:
                         board_obj[i, j].GetComponent<SpriteRenderer>().sprite = sprites[1]; break;
                     case 4:
@@ -67,7 +72,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        b.newPut();
+        b.newPut();
     }
 
     // Update is called once per frame
@@ -85,5 +91,21 @@ public class GameManager : MonoBehaviour
             }
         }
         DrawBoard();
+        b.exportScore();
+        DrawBoom(b.exportBomb());
+    }
+
+    void DrawBoom(int key)
+    {
+        if (key != -1)
+        {
+            int xx = key / size;
+            int yy = key % size;
+            Instantiate(obj_boom, board_obj[xx,yy].transform.position+new Vector3(0,0,-1), Quaternion.identity);
+        }
+        else
+        {
+            DestroyObject(obj_boom);
+        }
     }
 }

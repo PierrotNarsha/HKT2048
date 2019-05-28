@@ -19,9 +19,10 @@ public class BoardManager : MonoBehaviour
 
 public class Board
 {
-    public readonly int LENGTH = 4;
+    public const int LENGTH = 4;
     private int[,] value;
-    public int score;
+    private int score;
+    private int bombkey = -1;
 
     public Board()
     {
@@ -33,8 +34,7 @@ public class Board
                 value[i, j] = 0;
             }
         }
-        newPut();
-        newPut();
+        
         score = 0;
     }
 
@@ -86,5 +86,13 @@ public class Board
     public int[,] exportBoard()
     {
         return value;
+    }
+    public int exportScore()
+    {
+        return score;
+    }
+    public int exportBomb()
+    {
+        return bombkey;
     }
 }
